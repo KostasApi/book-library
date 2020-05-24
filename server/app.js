@@ -3,6 +3,7 @@ const morgan = require("morgan");
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUI = require("swagger-ui-express");
 
+const errorHandler = require("./middlewares/error");
 const connectDB = require("./db/db");
 const books = require("./routes/v1/books.route");
 
@@ -42,5 +43,8 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 // routes
 app.use("/api/v1/books", books);
+
+// error handling
+app.use(errorHandler);
 
 module.exports = app;

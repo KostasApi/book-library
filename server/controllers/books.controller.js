@@ -1,6 +1,7 @@
 const Book = require("../models/Book.model");
+const ErrorResponse = require("../utils/errorResponse");
 
-exports.getBooks = async (req, res) => {
+exports.getBooks = async (req, res, next) => {
   try {
     const books = await Book.find();
 
@@ -9,11 +10,11 @@ exports.getBooks = async (req, res) => {
       data: books,
     });
   } catch (error) {
-    res.status(404).json({ error });
+    next(error);
   }
 };
 
-exports.createBook = async (req, res) => {
+exports.createBook = async (req, res, next) => {
   try {
     const book = await Book.create(req.body);
 
@@ -22,31 +23,37 @@ exports.createBook = async (req, res) => {
       data: book,
     });
   } catch (error) {
-    res.status(404).json({ error });
+    next(error);
   }
 };
 
-exports.getBook = async (req, res) => {
+exports.getBook = async (req, res, next) => {
   try {
     const book = await Book.findById(req.params.id);
+
+    if (!book) {
+      next(
+        new ErrorResponse(`Book not found with id of ${req.params.id}`, 404)
+      );
+    }
 
     res.status(200).json({
       success: true,
       data: book,
     });
   } catch (error) {
-    res.status(404).json({ error });
+    next(error);
   }
 };
 
-exports.updateBook = async (req, res) => {
+exports.updateBook = async (req, res, next) => {
   try {
     let book = await Book.findById(req.params.id);
 
     if (!book) {
-      res
-        .status(404)
-        .json({ error: `Book not found with id of ${req.params.id}` });
+      next(
+        new ErrorResponse(`Book not found with id of ${req.params.id}`, 404)
+      );
     }
 
     book = await Book.findByIdAndUpdate(req.params.id, req.body, {
@@ -59,24 +66,24 @@ exports.updateBook = async (req, res) => {
       data: book,
     });
   } catch (error) {
-    res.status(404).json({ error });
+    next(error);
   }
 };
 
-exports.deleteBook = async (req, res) => {
+exports.deleteBook = async (req, res, next) => {
   try {
     const book = await Book.findById(req.params.id);
 
     if (!book) {
-      res
-        .status(404)
-        .json({ error: `Book not found with id of ${req.params.id}` });
+      next(
+        new ErrorResponse(`Book not found with id of ${req.params.id}`, 404)
+      );
     }
 
     await book.remove();
 
     res.status(200).json({ success: true, data: {} });
   } catch (error) {
-    res.status(404).json({ error });
+    next(error);
   }
 };
