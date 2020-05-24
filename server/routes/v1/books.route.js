@@ -24,7 +24,11 @@ const router = express.Router();
  *         schema:
  *           type: array
  *       404:
- *         description: Error
+ *         description: User error
+ *         schema:
+ *           type: object
+ *       500:
+ *         description: Server error
  *         schema:
  *           type: object
  */
@@ -55,8 +59,16 @@ router.route("/").get(getBooks);
  *         description: Book created
  *         schema:
  *           type: object
+ *       400:
+ *         description: User error
+ *         schema:
+ *           type: object
  *       404:
- *         description: Error
+ *         description: User error
+ *         schema:
+ *           type: object
+ *       500:
+ *         description: Server error
  *         schema:
  *           type: object
  */
@@ -84,8 +96,16 @@ router.route("/").post(createBook);
  *         description: A book
  *         schema:
  *           type: object
+ *       400:
+ *         description: User error
+ *         schema:
+ *           type: object
  *       404:
- *         description: Error
+ *         description: User error
+ *         schema:
+ *           type: object
+ *       500:
+ *         description: Server error
  *         schema:
  *           type: object
  *
@@ -128,8 +148,16 @@ router.route("/:id").get(getBook);
  *         description: A book
  *         schema:
  *           type: object
+ *       400:
+ *         description: User error
+ *         schema:
+ *           type: object
  *       404:
- *         description: Error
+ *         description: User error
+ *         schema:
+ *           type: object
+ *       500:
+ *         description: Server error
  *         schema:
  *           type: object
  */
@@ -155,8 +183,16 @@ router.route("/:id").put(updateBook);
  *         description: Empty object
  *         schema:
  *           type: object
+ *       400:
+ *         description: User error
+ *         schema:
+ *           type: object
  *       404:
- *         description: Error
+ *         description: User error
+ *         schema:
+ *           type: object
+ *       500:
+ *         description: Server error
  *         schema:
  *           type: object
  */
