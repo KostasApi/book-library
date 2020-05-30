@@ -50,9 +50,11 @@ router.route("/").get(getBooks);
  *             schema:
  *                type: object
  *                properties:
- *                   name:
+ *                   title:
  *                      type: string
  *                   description:
+ *                      type: string
+ *                   author:
  *                      type: string
  *     responses:
  *       201:
@@ -121,9 +123,11 @@ router.route("/").post(createBook);
  *    book:
  *      type: object
  *      properties:
- *        name:
+ *        title:
  *          type: string
  *        description:
+ *          type: string
+ *        author:
  *          type: string
  */
 router.route("/:id").get(getBook);
