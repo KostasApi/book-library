@@ -4,7 +4,7 @@ const app = require("./app");
 const port = process.env.PORT || 9000;
 
 const server = app.listen(port, () =>
-  console.log(`Serverconst server = listening on port ${port}!`)
+  console.log(`Server listening on port ${port}!`)
 );
 
 // Handle unhandled promise rejections

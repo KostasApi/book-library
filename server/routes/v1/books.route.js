@@ -1,4 +1,7 @@
 const express = require("express");
+const passport = require("passport");
+
+const { authorize } = require("../../middlewares/authorization");
 
 const {
   getBooks,
@@ -32,7 +35,13 @@ const router = express.Router();
  *         schema:
  *           type: object
  */
-router.route("/").get(getBooks);
+router
+  .route("/")
+  .get(
+    passport.authenticate("jwt", { session: false }),
+    authorize("admin", "user"),
+    getBooks
+  );
 
 /**
  * @swagger
@@ -74,7 +83,13 @@ router.route("/").get(getBooks);
  *         schema:
  *           type: object
  */
-router.route("/").post(createBook);
+router
+  .route("/")
+  .post(
+    passport.authenticate("jwt", { session: false }),
+    authorize("admin", "user"),
+    createBook
+  );
 
 /**
  * @swagger
@@ -130,7 +145,13 @@ router.route("/").post(createBook);
  *        author:
  *          type: string
  */
-router.route("/:id").get(getBook);
+router
+  .route("/:id")
+  .get(
+    passport.authenticate("jwt", { session: false }),
+    authorize("admin", "user"),
+    getBook
+  );
 
 /**
  * @swagger
@@ -165,7 +186,13 @@ router.route("/:id").get(getBook);
  *         schema:
  *           type: object
  */
-router.route("/:id").put(updateBook);
+router
+  .route("/:id")
+  .put(
+    passport.authenticate("jwt", { session: false }),
+    authorize("admin", "user"),
+    updateBook
+  );
 
 /**
  * @swagger
@@ -200,6 +227,12 @@ router.route("/:id").put(updateBook);
  *         schema:
  *           type: object
  */
-router.route("/:id").delete(deleteBook);
+router
+  .route("/:id")
+  .delete(
+    passport.authenticate("jwt", { session: false }),
+    authorize("admin", "user"),
+    deleteBook
+  );
 
 module.exports = router;

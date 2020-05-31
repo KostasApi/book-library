@@ -8,6 +8,15 @@ const errorHandler = (err, req, res, next) => {
   // Log to console for dev
   console.log("ERROR", err);
 
+  // Passport missing email or password
+  if (err.name === "AuthenticationError") {
+    error.statusCode = err.status;
+    if (err.status === 400) {
+      const message = `Please provide both email and password`;
+      error = new ErrorResponse(message, 400);
+    }
+  }
+
   // Mongoose bad ObjectId
   if (err.name === "CastError") {
     const message = `Resource not found`;

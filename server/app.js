@@ -4,8 +4,10 @@ const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUI = require("swagger-ui-express");
 
 const errorHandler = require("./middlewares/error");
+require("./middlewares/authentication");
 const connectDB = require("./db/db");
 const books = require("./routes/v1/books.route");
+const users = require("./routes/v1/users.route");
 
 const app = express();
 
@@ -43,6 +45,7 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 // routes
 app.use("/api/v1/books", books);
+app.use("/api/v1/users", users);
 
 // error handling
 app.use(errorHandler);

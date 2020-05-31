@@ -23,6 +23,11 @@ const BookSchema = new mongoose.Schema(
       maxlength: [50, "Author can not be more than 30 characters"],
       minlength: [2, "Author can not be less than 2 characters"],
     },
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   {
     timestamps: true,
