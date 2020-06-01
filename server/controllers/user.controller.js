@@ -51,7 +51,7 @@ exports.signinUser = (req, res, next) => {
 
 exports.getUsers = async (req, res, next) => {
   try {
-    const users = await User.find();
+    const users = await User.find().populate("books");
 
     return res.status(200).json({
       success: true,

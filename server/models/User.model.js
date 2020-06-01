@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable func-names */
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
@@ -43,6 +44,8 @@ const UserSchema = new Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
 
@@ -70,12 +73,20 @@ UserSchema.methods.isValidPassword = async function (password) {
   return compare;
 };
 
-// // Cascade delete courses when a bootcamp is deleted
-// BootcampSchema.pre('remove', async function(next) {
-//   console.log(`Courses being removed from bootcamp ${this._id}`);
-//   await this.model('Course').deleteMany({ bootcamp: this._id });
-//   next();
-// });
+// Cascade delete books when a user is deleted
+UserSchema.pre("remove", async function (next) {
+  console.log(`Books being removed from user ${this._id}`);
+  await this.model("Book").deleteMany({ user: this._id });
+  next();
+});
+
+// Reverse populate with virtuals
+UserSchema.virtual("books", {
+  ref: "Book",
+  localField: "_id",
+  foreignField: "user",
+  justOne: false,
+});
 
 const UserModel = mongoose.model("user", UserSchema);
 
