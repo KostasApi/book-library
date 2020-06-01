@@ -19,6 +19,8 @@ const router = express.Router();
  *   get:
  *     summary: Get a list of books
  *     description: Returns books
+ *     security:
+ *       - BearerAuth: []
  *     tags:
  *      - Books
  *     responses:
@@ -26,6 +28,14 @@ const router = express.Router();
  *         description: List of books
  *         schema:
  *           type: array
+ *       400:
+ *         description: User error
+ *         schema:
+ *           type: object
+ *       401:
+ *         description: Unauthorized
+ *         schema:
+ *           type: object
  *       404:
  *         description: User error
  *         schema:
@@ -51,6 +61,8 @@ router
  *      - Books
  *     summary: Create a book
  *     description: Create a book
+ *     security:
+ *       - BearerAuth: []
  *     consumes:
  *      - application/x-www-form-urlencoded
  *     requestBody:
@@ -72,6 +84,10 @@ router
  *           type: object
  *       400:
  *         description: User error
+ *         schema:
+ *           type: object
+ *       401:
+ *         description: Unauthorized
  *         schema:
  *           type: object
  *       404:
@@ -97,6 +113,8 @@ router
  *   put:
  *     summary: Update a book
  *     description: Returns a book
+ *     security:
+ *       - BearerAuth: []
  *     tags:
  *      - Books
  *     parameters:
@@ -115,6 +133,10 @@ router
  *           type: object
  *       400:
  *         description: User error
+ *         schema:
+ *           type: object
+ *       401:
+ *         description: Unauthorized
  *         schema:
  *           type: object
  *       404:
@@ -159,6 +181,8 @@ router
  *   get:
  *     summary: Get a single book
  *     description: Returns a book
+ *     security:
+ *       - BearerAuth: []
  *     tags:
  *      - Books
  *     parameters:
@@ -175,6 +199,10 @@ router
  *           type: object
  *       400:
  *         description: User error
+ *         schema:
+ *           type: object
+ *       401:
+ *         description: Unauthorized
  *         schema:
  *           type: object
  *       404:
@@ -200,6 +228,8 @@ router
  *   delete:
  *     summary: Delete a book
  *     description: Delete a book
+ *     security:
+ *       - BearerAuth: []
  *     tags:
  *      - Books
  *     parameters:
@@ -216,6 +246,10 @@ router
  *           type: object
  *       400:
  *         description: User error
+ *         schema:
+ *           type: object
+ *       401:
+ *         description: Unauthorized
  *         schema:
  *           type: object
  *       404:

@@ -36,6 +36,11 @@ const swaggerOptions = {
     },
     produces: ["application/json"],
     schemes: ["http", "https"],
+    components: {
+      securitySchemes: {
+        BearerAuth: { type: "http", scheme: "bearer" },
+      },
+    },
   },
   apis: ["./routes/**/*.js"],
 };
