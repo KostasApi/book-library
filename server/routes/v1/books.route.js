@@ -2,6 +2,8 @@ const express = require("express");
 const passport = require("passport");
 
 const { authorize } = require("../../middlewares/authorization");
+const advancedResults = require("../../middlewares/advancedResults");
+const Book = require("../../models/Book.model");
 
 const {
   getBooks,
@@ -19,6 +21,25 @@ const router = express.Router();
  *   get:
  *     summary: Get a list of books
  *     description: Returns books
+ *     parameters:
+ *       - name: title
+ *         in: query
+ *         description: Book Title
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: author
+ *         in: query
+ *         description: Book Author
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: description
+ *         in: query
+ *         description: Book Description
+ *         required: false
+ *         schema:
+ *           type: string
  *     security:
  *       - BearerAuth: []
  *     tags:
@@ -50,6 +71,7 @@ router
   .get(
     passport.authenticate("jwt", { session: false }),
     authorize("admin", "user"),
+    advancedResults(Book),
     getBooks
   );
 

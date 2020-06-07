@@ -3,18 +3,7 @@ const ErrorResponse = require("../utils/errorResponse");
 
 exports.getBooks = async (req, res, next) => {
   try {
-    let books = [];
-
-    if (req.user.role === "admin") {
-      books = await Book.find();
-    } else {
-      books = await Book.find({ user: req.user.id });
-    }
-
-    return res.status(200).json({
-      success: true,
-      data: books,
-    });
+    return res.status(200).json(res.advancedResults);
   } catch (error) {
     return next(error);
   }
