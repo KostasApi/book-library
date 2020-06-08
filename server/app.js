@@ -5,7 +5,11 @@ const swaggerUI = require("swagger-ui-express");
 
 const errorHandler = require("./middlewares/error");
 require("./middlewares/authentication");
+
 const connectDB = require("./db/db");
+
+require("./utils/cache");
+
 const books = require("./routes/v1/books.route");
 const users = require("./routes/v1/users.route");
 

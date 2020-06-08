@@ -1,18 +1,20 @@
-version: "3"
+version: '3'
 networks:
   book-library:
     driver: bridge
 services:
   proxy:
+    container_name: book-library-proxy
     restart: always
     build:
       dockerfile: Dockerfile.dev
       context: ./reverse-proxy
     ports:
-      - "9000:80"
+      - '9000:80'
     networks:
       - book-library
   node-server:
+    container_name: book-library-server
     build:
       dockerfile: Dockerfile.dev
       context: ./server
@@ -21,18 +23,30 @@ services:
       - ./server:/usr/src/app
     links:
       - mongoDB
+      - cache
     depends_on:
       - mongoDB
     networks:
       - book-library
   mongoDB:
+    container_name: book-library-mongodb
     image: mongo:4.0
     ports:
-      - "27000:27017"
+      - '27000:27017'
     expose:
-      - "27000"
+      - '27000'
     volumes:
       - mongoDB-data:/data/db
+    networks:
+      - book-library
+  cache:
+    container_name: book-library-cache
+    image: 'redis:alpine'
+    ports:
+      - '6379:6379'
+    expose:
+      - '6379'
+    restart: always
     networks:
       - book-library
 volumes:

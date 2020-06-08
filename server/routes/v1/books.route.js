@@ -3,6 +3,7 @@ const passport = require("passport");
 
 const { authorize } = require("../../middlewares/authorization");
 const advancedResults = require("../../middlewares/advancedResults");
+const clearCache = require("../../middlewares/clearCache");
 const Book = require("../../models/Book.model");
 
 const {
@@ -126,6 +127,7 @@ router
   .post(
     passport.authenticate("jwt", { session: false }),
     authorize("admin", "user"),
+    clearCache,
     createBook
   );
 
@@ -241,6 +243,7 @@ router
   .put(
     passport.authenticate("jwt", { session: false }),
     authorize("admin", "user"),
+    clearCache,
     updateBook
   );
 
@@ -288,6 +291,7 @@ router
   .delete(
     passport.authenticate("jwt", { session: false }),
     authorize("admin", "user"),
+    clearCache,
     deleteBook
   );
 

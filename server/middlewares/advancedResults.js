@@ -58,7 +58,16 @@ const advancedResults = (model, populate) => async (req, res, next) => {
   }
 
   // Executing query
-  const results = await query;
+  let results = {};
+  // if user is admin return data always from mongo
+  if (req.user.role === "admin") {
+    results = await query;
+  } else {
+    // else return data from cache if exist
+    results = await query.cache({
+      key: req.user.id,
+    });
+  }
 
   // Pagination result
   const pagination = {};
