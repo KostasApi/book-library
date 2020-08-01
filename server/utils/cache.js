@@ -27,13 +27,19 @@ module.exports = api => {
   client.on("close", () => {
     console.log("Redis connection closed!");
     api.isCacheAvailable = false;
-    clearHash(api.user.id);
+    client.flushall("ASYNC", (err, succeeded) => {
+      if (err) console.log("Error in flushing cache!", err);
+      console.log("Flushing cache was successful!", succeeded);
+    });
   });
 
   client.on("end", () => {
     console.log("Redis connection ended!");
     api.isCacheAvailable = false;
-    clearHash(api.user.id);
+    client.flushall("ASYNC", (err, succeeded) => {
+      if (err) console.log("Error in flushing cache!", err);
+      console.log("Flushing cache was successful!", succeeded);
+    });
   });
 
   client.on("error", error => {
