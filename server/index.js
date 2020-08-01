@@ -1,5 +1,12 @@
 const dotenv = require("dotenv").config();
-const app = require("./app");
+
+const api = {
+  isCacheAvailable: false,
+  clearCache: null,
+  user: null,
+};
+
+const app = require("./app")(api);
 
 const port = process.env.PORT || 9000;
 

@@ -4,59 +4,62 @@ const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUI = require("swagger-ui-express");
 
 const errorHandler = require("./middlewares/error");
-require("./middlewares/authentication");
 
 const connectDB = require("./db/db");
 
-require("./utils/cache");
+module.exports = api => {
+  const app = express();
 
-const books = require("./routes/v1/books.route");
-const users = require("./routes/v1/users.route");
+  require("./middlewares/authentication")(api);
 
-const app = express();
+  const clearHash = require("./utils/cache")(api);
 
-// parsing application/json
-app.use(express.json());
-// parsing application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
-// log http requests
-app.use(morgan("dev"));
+  api.clearCache = async (req, res, next) => {
+    await next();
+    clearHash(req.user.id);
+  };
 
-// connect to database
-connectDB();
+  // parsing application/json
+  app.use(express.json());
+  // parsing application/x-www-form-urlencoded
+  app.use(express.urlencoded({ extended: true }));
+  // log http requests
+  app.use(morgan("dev"));
 
-// swagger configuration - https://swagger.io/specification/
-const swaggerOptions = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "Book library API",
-      description: "Book library API description",
-      version: "1.0.0",
-      contact: {
-        name: "Konstantinos Apidopoulos",
+  // connect to database
+  connectDB();
+
+  // swagger configuration - https://swagger.io/specification/
+  const swaggerOptions = {
+    definition: {
+      openapi: "3.0.0",
+      info: {
+        title: "Book library API",
+        description: "Book library API description",
+        version: "1.0.0",
+        contact: {
+          name: "Konstantinos Apidopoulos",
+        },
+        servers: ["http://localhost:3000"],
       },
-      servers: ["http://localhost:3000"],
-    },
-    produces: ["application/json"],
-    schemes: ["http", "https"],
-    components: {
-      securitySchemes: {
-        BearerAuth: { type: "http", scheme: "bearer" },
+      produces: ["application/json"],
+      schemes: ["http", "https"],
+      components: {
+        securitySchemes: {
+          BearerAuth: { type: "http", scheme: "bearer" },
+        },
       },
     },
-  },
-  apis: ["./routes/**/*.js"],
+    apis: ["./routes/**/*.js"],
+  };
+
+  const swaggerDocs = swaggerJSDoc(swaggerOptions);
+  app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
+  // routes
+  app.use("/api/v1", require("./routes/v1/index.route")(api).router);
+
+  // error handling
+  app.use(errorHandler);
+  return app;
 };
-
-const swaggerDocs = swaggerJSDoc(swaggerOptions);
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
-
-// routes
-app.use("/api/v1/books", books);
-app.use("/api/v1/users", users);
-
-// error handling
-app.use(errorHandler);
-
-module.exports = app;
