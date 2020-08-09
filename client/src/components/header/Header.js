@@ -9,12 +9,17 @@ import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles(theme => ({
   toolbar: {
     borderBottom: `1px solid ${theme.palette.divider}`,
+    padding: 0,
   },
   toolbarTitle: {
     flex: 1,
   },
-  button: {
-    margin: '0 5px',
+  singupButton: {
+    margin: '0 10px',
+    minWidth: '73px',
+  },
+  singinButton: {
+    minWidth: '69px',
   },
 }));
 
@@ -36,7 +41,7 @@ export default function Header({ title }) {
       <Button
         variant="outlined"
         size="small"
-        className={classes.button}
+        className={classes.singupButton}
         component={Link}
         to="/signup"
       >
@@ -45,7 +50,7 @@ export default function Header({ title }) {
       <Button
         variant="outlined"
         size="small"
-        className={classes.button}
+        className={classes.singinButton}
         component={Link}
         to="/signin"
       >

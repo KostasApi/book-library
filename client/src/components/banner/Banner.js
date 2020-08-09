@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(4, 0, 4),
     backgroundSize: 'cover',
     backgroundPosition: 'center',
+    backgroundImage: `url(${library})`,
   },
   innerBanner: {
     position: 'relative',
@@ -25,10 +26,7 @@ const useStyles = makeStyles(theme => ({
 export default function Banner() {
   const classes = useStyles();
   return (
-    <Paper
-      className={classes.banner}
-      style={{ backgroundImage: `url(${library})` }}
-    >
+    <Paper className={classes.banner}>
       <Grid container>
         <Grid item md={6}>
           <div className={classes.innerBanner}>
