@@ -13,6 +13,16 @@ services:
       - '9000:80'
     networks:
       - book-library
+  client:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./client
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+    networks:
+      - book-library
+    tty: true
   node-server:
     container_name: book-library-server
     build:
