@@ -38,10 +38,16 @@ exports.signinUser = (req, res, next) => {
           expiresIn: 3600,
         }
       );
-      // Send back the token to the user
+
+      const userInfo = {
+        email: user.email,
+        firstname: user.firstname,
+        lastname: user.lastname,
+      };
+      // Send back the token and user info
       return res.status(200).json({
         success: true,
-        data: token,
+        data: { token, user: userInfo },
       });
     });
   } catch (error) {

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const JWTstrategy = require("passport-jwt").Strategy;
@@ -45,7 +46,9 @@ module.exports = api => {
       async (email, password, done) => {
         try {
           // Find the user associated with the email provided by the user
-          const user = await UserModel.findOne({ email }).select("password");
+          const user = await UserModel.findOne({ email }).select(
+            "password email firstname lastname"
+          );
           if (!user) {
             // If the user isn't found in the database, return an error
             return done(new ErrorResponse(`Invalid credentials`, 404), false);
@@ -82,7 +85,6 @@ module.exports = api => {
             // If the user isn't found in the database, return an error
             return done(new ErrorResponse(`Invalid credentials`, 404), false);
           }
-          api.user = user;
           // Pass the user details to the next middleware
           return done(null, user);
         } catch (error) {
