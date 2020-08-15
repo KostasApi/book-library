@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, Redirect } from 'react-router-dom';
 
 import {
   Avatar,
@@ -11,6 +11,11 @@ import {
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
+
+import { UserContext } from 'context/userContext';
+import Loader from 'components/loader/Loader';
+import Message from 'components/message/Message';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -41,8 +46,38 @@ const useStyles = makeStyles(theme => ({
 export default function SignUp() {
   const classes = useStyles();
 
+  const [user, setUser] = useState({
+    firstname: '',
+    lastname: '',
+    email: '',
+    password: '',
+  });
+
+  const [{ userInfo, loading, error }, dispatch] = useContext(UserContext);
+
+  const onSubmit = async e => {
+    e.preventDefault();
+    dispatch({ type: 'SIGN_UP' });
+
+    try {
+      const { data: result } = await axios.post('/api/v1/users/signup', user);
+      dispatch({ type: 'SIGN_UP_SUCCESS', payload: { user: result.data } });
+    } catch (error) {
+      console.log('error :>> ', error);
+      dispatch({ type: 'SIGN_UP_FAIL', error: error.response.data.error });
+    }
+  };
+
+  const onInputChange = e => {
+    const { name, value } = e.target;
+    setUser(prevUserCredentials => {
+      return { ...prevUserCredentials, [name]: value };
+    });
+  };
+
   return (
     <Container component="main" maxWidth="xs">
+      {userInfo && <Redirect to="/signin" />}
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -55,13 +90,15 @@ export default function SignUp() {
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
-                name="firstName"
+                name="firstname"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
+                id="firstname"
                 label="First Name"
                 autoFocus
+                value={user.firstname}
+                onChange={onInputChange}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -69,10 +106,12 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                id="lastName"
+                id="lastname"
                 label="Last Name"
-                name="lastName"
+                name="lastname"
                 autoComplete="lname"
+                value={user.lastname}
+                onChange={onInputChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -84,6 +123,8 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                value={user.email}
+                onChange={onInputChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -96,6 +137,8 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={user.password}
+                onChange={onInputChange}
               />
             </Grid>
           </Grid>
@@ -105,6 +148,7 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={onSubmit}
           >
             Sign Up
           </Button>
@@ -127,6 +171,14 @@ export default function SignUp() {
           </Grid>
         </form>
       </div>
+      <Loader show={loading} />
+      <Message
+        show={!!error}
+        message={error}
+        severity="error"
+        dispatch={dispatch}
+        dispatchType="CLEAR_ERROR"
+      />
     </Container>
   );
 }

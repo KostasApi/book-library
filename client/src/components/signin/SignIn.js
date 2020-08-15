@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import {
   Avatar,
   Button,
@@ -10,6 +10,11 @@ import {
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
+
+import { UserContext } from 'context/userContext';
+import Loader from 'components/loader/Loader';
+import Message from 'components/message/Message';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -40,8 +45,39 @@ const useStyles = makeStyles(theme => ({
 export default function SignIn() {
   const classes = useStyles();
 
+  const [userCredentials, setUserCredentials] = useState({
+    email: 'test@test.com',
+    password: '123456',
+  });
+
+  const [{ userInfo, loading, error }, dispatch] = useContext(UserContext);
+
+  const onSubmit = async e => {
+    e.preventDefault();
+    dispatch({ type: 'SIGN_IN' });
+
+    try {
+      const { data: result } = await axios.post(
+        '/api/v1/users/signin',
+        userCredentials
+      );
+      dispatch({ type: 'SIGN_IN_SUCCESS', payload: result.data });
+    } catch (error) {
+      console.log('error :>> ', error);
+      dispatch({ type: 'SIGN_IN_FAIL', error: error.response.data.error });
+    }
+  };
+
+  const onInputChange = e => {
+    const { name, value } = e.target;
+    setUserCredentials(prevUserCredentials => {
+      return { ...prevUserCredentials, [name]: value };
+    });
+  };
+
   return (
     <Container component="main" maxWidth="xs">
+      {userInfo?.token && <Redirect to="/home" />}
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -60,6 +96,8 @@ export default function SignIn() {
             name="email"
             autoComplete="email"
             autoFocus
+            value={userCredentials.email}
+            onChange={onInputChange}
           />
           <TextField
             variant="outlined"
@@ -71,6 +109,8 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={userCredentials.password}
+            onChange={onInputChange}
           />
           <Button
             type="submit"
@@ -78,6 +118,7 @@ export default function SignIn() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={onSubmit}
           >
             Sign In
           </Button>
@@ -100,6 +141,14 @@ export default function SignIn() {
           </Grid>
         </form>
       </div>
+      <Loader show={loading} />
+      <Message
+        show={!!error}
+        message={error}
+        severity="error"
+        dispatch={dispatch}
+        dispatchType="CLEAR_ERROR"
+      />
     </Container>
   );
 }

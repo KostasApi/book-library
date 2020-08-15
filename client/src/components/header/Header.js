@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 // import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import {
+  Toolbar,
+  Button,
+  Typography,
+  IconButton,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from '@material-ui/core';
+import { AccountCircle } from '@material-ui/icons';
+
+import { UserContext } from 'context/userContext';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -16,15 +25,53 @@ const useStyles = makeStyles(theme => ({
   },
   singupButton: {
     margin: '0 10px',
-    minWidth: '73px',
   },
-  singinButton: {
-    minWidth: '69px',
+  userIcon: {
+    '& svg': {
+      fontSize: 32,
+    },
+  },
+  link: {
+    textDecoration: 'none',
+    color: 'black',
   },
 }));
 
 export default function Header({ title }) {
   const classes = useStyles();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const [{ userInfo }, dispatch] = useContext(UserContext);
+
+  const onSignOut = () => {
+    setIsMenuOpen(false);
+    dispatch({
+      type: 'SIGN_OUT',
+    });
+  };
+
+  const onUserIconClick = e => {
+    setAnchorEl(e.currentTarget);
+    setIsMenuOpen(true);
+  };
+
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      keepMounted
+      open={isMenuOpen}
+      onClose={() => setIsMenuOpen(false)}
+    >
+      {/* <MenuItem onClick={() => setIsMenuOpen(false)}>
+        <Link className={classes.link} to="/home">
+          Profile
+        </Link>
+      </MenuItem> */}
+      <MenuItem onClick={onSignOut}>Sign Out</MenuItem>
+    </Menu>
+  );
 
   return (
     <Toolbar className={classes.toolbar}>
@@ -38,24 +85,36 @@ export default function Header({ title }) {
       >
         {title}
       </Typography>
-      <Button
-        variant="outlined"
-        size="small"
-        className={classes.singupButton}
-        component={Link}
-        to="/signup"
-      >
-        Sign up
-      </Button>
-      <Button
-        variant="outlined"
-        size="small"
-        className={classes.singinButton}
-        component={Link}
-        to="/signin"
-      >
-        Sign in
-      </Button>
+      {userInfo?.token ? (
+        <Tooltip
+          title={`${userInfo.user.firstname} ${userInfo.user.lastname}`}
+          arrow
+        >
+          <IconButton
+            className={classes.userIcon}
+            edge="end"
+            onClick={onUserIconClick}
+          >
+            <AccountCircle />
+          </IconButton>
+        </Tooltip>
+      ) : (
+        <>
+          <Button
+            variant="outlined"
+            size="small"
+            className={classes.singupButton}
+            component={Link}
+            to="/signup"
+          >
+            Sign up
+          </Button>
+          <Button variant="outlined" size="small" component={Link} to="/signin">
+            Sign in
+          </Button>
+        </>
+      )}
+      {renderMenu}
     </Toolbar>
   );
 }

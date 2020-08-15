@@ -3,6 +3,7 @@ import { CssBaseline } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import AppRouter from 'routes/AppRouter';
+import { UserContextProvider } from 'context/userContext';
 
 const useStyles = makeStyles(theme => ({
   app: {
@@ -14,9 +15,11 @@ export default function App() {
   const classes = useStyles();
 
   return (
-    <div className={classes.app}>
-      <CssBaseline />
-      <AppRouter />
-    </div>
+    <UserContextProvider>
+      <div className={classes.app}>
+        <CssBaseline />
+        <AppRouter />
+      </div>
+    </UserContextProvider>
   );
 }
