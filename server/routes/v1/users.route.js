@@ -64,7 +64,7 @@ module.exports = (api, path = "/users") => {
    * /api/v1/users/signin:
    *   post:
    *     summary: Login a user
-   *     description: Returns a token
+   *     description: Returns a token and user info
    *     tags:
    *      - Users
    *     consumes:
@@ -81,7 +81,7 @@ module.exports = (api, path = "/users") => {
    *                      type: string
    *     responses:
    *       200:
-   *         description: A bearer token
+   *         description: A bearer token and user info
    *         schema:
    *           type: object
    *       400:
