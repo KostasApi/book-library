@@ -8,9 +8,15 @@ exports.signupUser = async (req, res, next) => {
   try {
     const user = await User.create(req.body);
 
+    const userInfo = {
+      email: user.email,
+      firstname: user.firstname,
+      lastname: user.lastname,
+    };
+
     return res.status(201).json({
       success: true,
-      data: user,
+      data: userInfo,
     });
   } catch (error) {
     return next(error);
