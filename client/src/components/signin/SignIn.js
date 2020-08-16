@@ -13,7 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
 import { UserContext } from 'context/userContext';
-import Loader from 'components/loader/Loader';
+import Spinner from 'components/loader/Spinner';
 import Message from 'components/message/Message';
 
 const useStyles = makeStyles(theme => ({
@@ -77,7 +77,7 @@ export default function SignIn() {
 
   return (
     <Container component="main" maxWidth="xs">
-      {userInfo?.token && <Redirect to="/home" />}
+      {userInfo?.token && <Redirect to="/booklist" />}
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -141,7 +141,7 @@ export default function SignIn() {
           </Grid>
         </form>
       </div>
-      <Loader show={loading} />
+      <Spinner show={loading} />
       <Message
         show={!!error}
         message={error}

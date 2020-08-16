@@ -14,7 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
 import { UserContext } from 'context/userContext';
-import Loader from 'components/loader/Loader';
+import Spinner from 'components/loader/Spinner';
 import Message from 'components/message/Message';
 
 const useStyles = makeStyles(theme => ({
@@ -171,7 +171,7 @@ export default function SignUp() {
           </Grid>
         </form>
       </div>
-      <Loader show={loading} />
+      <Spinner show={loading} />
       <Message
         show={!!error}
         message={error}
