@@ -4,14 +4,15 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    minWidth: '360px',
+    minWidth: '328px',
     padding: 0,
-    marginTop: theme.spacing(4),
+    marginTop: 'auto',
   },
   footer: {
+    marginTop: theme.spacing(4),
     padding: theme.spacing(2, 2),
-    borderTopLeftRadius: 4,
-    borderTopRightRadius: 4,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
     backgroundColor:
       theme.palette.type === 'light'
         ? theme.palette.grey[200]
