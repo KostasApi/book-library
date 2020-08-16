@@ -12,6 +12,7 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundImage: `url(${library})`,
+    minHeight: '25vh',
   },
   innerBanner: {
     position: 'relative',
@@ -23,23 +24,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Banner() {
+export default function Banner({ title, subtitle }) {
   const classes = useStyles();
   return (
     <Paper className={classes.banner}>
       <Grid container>
         <Grid item md={6}>
           <div className={classes.innerBanner}>
-            <Typography
-              component="h1"
-              variant="h3"
-              color="inherit"
-              gutterBottom
-            >
-              Test title
+            <Typography variant="h3" color="inherit" gutterBottom>
+              {title}
             </Typography>
             <Typography variant="h5" color="inherit" paragraph>
-              Test description
+              {subtitle}
             </Typography>
           </div>
         </Grid>

@@ -11,7 +11,7 @@ export default function Homepage() {
   return (
     <Container maxWidth="lg">
       <Header title="Book Library" />
-      <Banner />
+      <Banner title="Welcome" subtitle="Enjoy your favourite books" />
       <Grid container spacing={4}>
         {booklist.map(book => (
           <Grid key={book.id} item xs={12} sm={6} md={4} lg={3}>
