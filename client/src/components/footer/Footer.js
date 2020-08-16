@@ -5,21 +5,11 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
   root: {
     minWidth: '360px',
-    display: 'flex',
-    flexDirection: 'column',
     padding: 0,
-    minHeight: 'calc(100vh - 290px)',
-    [theme.breakpoints.up('sm')]: {
-      minHeight: 'calc(100vh - 297px)',
-    },
-    [theme.breakpoints.up('md')]: {
-      minHeight: 'calc(100vh - 393px)',
-    },
+    marginTop: theme.spacing(4),
   },
   footer: {
-    width: '100%',
     padding: theme.spacing(2, 2),
-    marginTop: 'auto',
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
     backgroundColor:
