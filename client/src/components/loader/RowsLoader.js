@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
   skeleton: {
     borderRadius: 5,
-    margin: '10px 0',
+    margin: theme.spacing(1, 0),
   },
 }));
 
