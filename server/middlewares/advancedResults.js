@@ -59,8 +59,13 @@ const advancedResults = (model, populate) => async (req, res, next) => {
 
   // Executing query
   let results = {};
-  // if user is admin or cache is unavailable return data from mongo
-  if (req.user.role === "admin" || !res.locals.api.isCacheAvailable) {
+  // if user is admin or cache is unavailable or search query has values return data from mongo
+  if (
+    req.user.role === "admin" ||
+    !res.locals.api.isCacheAvailable ||
+    Object.keys(reqQuery).length !== 1
+  ) {
+    console.log("Return data from MongoDB");
     results = await query;
   } else {
     // else return data from cache if exist

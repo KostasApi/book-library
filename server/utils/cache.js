@@ -81,7 +81,7 @@ module.exports = api => {
         client.hset(this.hashKey, key, JSON.stringify(result));
         client.expire(this.hashKey, this.expire);
 
-        console.log("Return data from MongoDB");
+        console.log("Not found in cache, return data from MongoDB");
         return result;
       }
 
