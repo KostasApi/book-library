@@ -99,7 +99,7 @@ export default function BookModal({
           color="primary"
           variant="contained"
         >
-          Cancel
+          {readOnly ? 'Close' : 'Cancel'}
         </Button>
 
         {action && (
