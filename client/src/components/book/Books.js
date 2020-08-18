@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Table,
   TableHead,
@@ -16,6 +16,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import RowsLoader from 'components/loader/RowsLoader';
 import Message from 'components/message/Message';
+import BookModal from './BookModal';
+import ConfirmDeleteModal from './ConfirmDeleteModal';
 
 const useStyles = makeStyles(theme => ({
   summaryCell: {
@@ -48,6 +50,14 @@ const useStyles = makeStyles(theme => ({
 export default function Books({ books, loading, error, dispatch }) {
   const classes = useStyles();
 
+  const [open, setOpen] = useState(false);
+  const [modalHeader, setModalHeader] = useState('');
+  const [modalMessage, setModalMessage] = useState('');
+  const [modalAction, setModalAction] = useState('');
+  const [readOnly, setReadOnly] = useState(true);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [selectedBook, setSelectedBook] = useState({});
+
   return loading ? (
     <>
       <Skeleton variant="circle" className={classes.loadingIcon}>
@@ -57,7 +67,18 @@ export default function Books({ books, loading, error, dispatch }) {
     </>
   ) : (
     <>
-      <Fab color="primary" size="small" className={classes.addIcon}>
+      <Fab
+        color="primary"
+        size="small"
+        className={classes.addIcon}
+        onClick={() => {
+          setOpen(true);
+          setModalHeader('Create Book');
+          setModalMessage('Book details');
+          setModalAction('Save');
+          setReadOnly(false);
+        }}
+      >
         <Add />
       </Fab>
       <Table size="small">
@@ -84,13 +105,39 @@ export default function Books({ books, loading, error, dispatch }) {
                 </Typography>
               </TableCell>
               <TableCell align="right">
-                <IconButton edge="end">
+                <IconButton
+                  edge="end"
+                  onClick={() => {
+                    setOpen(true);
+                    setSelectedBook(book);
+                    setModalHeader('View Book');
+                    setModalMessage('Book details');
+                    setModalAction('');
+                    setReadOnly(true);
+                  }}
+                >
                   <Visibility />
                 </IconButton>
-                <IconButton edge="end">
+                <IconButton
+                  edge="end"
+                  onClick={() => {
+                    setOpen(true);
+                    setSelectedBook(book);
+                    setModalHeader('Update Book');
+                    setModalMessage('Book details');
+                    setModalAction('Update');
+                    setReadOnly(false);
+                  }}
+                >
                   <Edit />
                 </IconButton>
-                <IconButton edge="end">
+                <IconButton
+                  edge="end"
+                  onClick={() => {
+                    setOpenDelete(true);
+                    setSelectedBook(book);
+                  }}
+                >
                   <Delete />
                 </IconButton>
               </TableCell>
@@ -104,6 +151,20 @@ export default function Books({ books, loading, error, dispatch }) {
         severity="error"
         dispatch={dispatch}
         dispatchType="CLEAR_ERROR"
+      />
+      <BookModal
+        open={open}
+        setOpen={setOpen}
+        selectedBook={selectedBook}
+        header={modalHeader}
+        message={modalMessage}
+        action={modalAction}
+        readOnly={readOnly}
+      />
+      <ConfirmDeleteModal
+        open={openDelete}
+        setOpen={setOpenDelete}
+        selectedBook={selectedBook}
       />
     </>
   );
