@@ -109,7 +109,7 @@ exports.deleteBook = async (req, res, next) => {
 
     await book.remove();
 
-    return res.status(200).json({ success: true, data: {} });
+    return res.status(200).json({ success: true, data: book });
   } catch (error) {
     return next(error);
   }
