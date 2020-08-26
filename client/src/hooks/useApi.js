@@ -19,7 +19,7 @@ export const useApi = (dispatch, initialUrl, requestOptions = {}) => {
         });
 
         if (!didCancel) {
-          dispatch({ type: 'FETCH_DATA_SUCCESS', payload: result });
+          dispatch({ type: 'FETCH_DATA_SUCCESS', payload: result.data });
         }
       } catch (error) {
         if (!didCancel) {
