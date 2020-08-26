@@ -1,40 +1,8 @@
-import { useState, useEffect, useReducer } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const dataFetchReducer = (state, action) => {
-  switch (action.type) {
-    case 'FETCH_DATA':
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
-    case 'FETCH_DATA_SUCCESS':
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        data: action.payload,
-      };
-    case 'FETCH_DATA_FAIL':
-      return {
-        ...state,
-        loading: false,
-        error: action.error,
-      };
-    default:
-      throw new Error();
-  }
-};
-
-export const useApi = (initialUrl, requestOptions = {}, initialData = null) => {
+export const useApi = (dispatch, initialUrl, requestOptions = {}) => {
   const [url, setUrl] = useState(initialUrl);
-
-  const [state, dispatch] = useReducer(dataFetchReducer, {
-    loading: false,
-    error: null,
-    data: initialData,
-  });
 
   useEffect(() => {
     let didCancel = false;
@@ -70,5 +38,5 @@ export const useApi = (initialUrl, requestOptions = {}, initialData = null) => {
     };
   }, [url]);
 
-  return [state, setUrl];
+  return [setUrl];
 };

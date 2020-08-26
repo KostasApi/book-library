@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ListLoader({ height, numberOfRows }) {
+export default function ListLoader({ rowHeight, numberOfRows }) {
   const classes = useStyles();
 
   return [...Array(numberOfRows)].map((x, index) => (
@@ -18,7 +18,7 @@ export default function ListLoader({ height, numberOfRows }) {
       className={classes.skeleton}
       variant="rect"
       component="p"
-      height={height}
+      height={rowHeight}
     />
   ));
 }

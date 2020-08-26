@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import {
   Table,
   TableHead,
@@ -13,7 +13,10 @@ import {
 import { Delete, Edit, Visibility, Add } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
+import { debounce } from 'lodash';
 
+import { useApi } from 'hooks/useApi';
+import { BooksContext } from 'context/booksContext';
 import RowsLoader from 'components/loader/RowsLoader';
 import Message from 'components/message/Message';
 import BookModal from './BookModal';
@@ -47,7 +50,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Books({ books, loading, error, dispatch }) {
+export default function Books({ userInfo, filters }) {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
@@ -58,12 +61,46 @@ export default function Books({ books, loading, error, dispatch }) {
   const [openDelete, setOpenDelete] = useState(false);
   const [selectedBook, setSelectedBook] = useState({});
 
+  const [state, dispatch] = useContext(BooksContext);
+
+  const { data, error, loading } = state;
+  const books = data?.data || [];
+
+  const [setUrl] = useApi(dispatch, null, {
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${userInfo.token}`,
+    },
+  });
+
+  const callApi = useCallback(
+    debounce(url => {
+      setUrl(url);
+    }, 500),
+    []
+  );
+
+  useEffect(() => {
+    let url = '/api/v1/books';
+    let query = '?';
+
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value) {
+        query = `${query}${key}=${value}&`;
+      }
+    });
+
+    url = `${url}${query}`;
+
+    callApi(url);
+  }, [filters, callApi]);
+
   return loading ? (
     <>
       <Skeleton variant="circle" className={classes.loadingIcon}>
         <Avatar />
       </Skeleton>
-      <RowsLoader height={45} numberOfRows={5} />
+      <RowsLoader rowHeight={45} numberOfRows={5} />
     </>
   ) : (
     <>
