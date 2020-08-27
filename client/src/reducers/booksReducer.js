@@ -1,5 +1,5 @@
 export const initialState = {
-  data: null,
+  books: [],
   loading: false,
   error: null,
 };
@@ -17,7 +17,7 @@ export default function userReducer(state, action) {
         ...state,
         loading: false,
         error: null,
-        data: action.payload,
+        books: action.payload,
       };
     case 'FETCH_DATA_FAIL':
       return {
@@ -25,7 +25,68 @@ export default function userReducer(state, action) {
         loading: false,
         error: action.error,
       };
+    case 'CREATE_BOOK':
+      return {
+        ...state,
+        loading: true,
+      };
+    case 'CREATE_BOOK_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        books: [action.payload, ...state.books],
+      };
+    case 'CREATE_BOOK_FAIL':
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+      };
+    case 'UPDATE_BOOK':
+      return {
+        ...state,
+        loading: true,
+      };
+    case 'UPDATE_BOOK_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        books: state.books.map(book =>
+          book._id === action.payload._id ? action.payload : book
+        ),
+      };
+    case 'UPDATE_BOOK_FAIL':
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+      };
+    case 'DELETE_BOOK':
+      return {
+        ...state,
+        loading: true,
+      };
+    case 'DELETE_BOOK_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        books: state.books.filter(book => book._id !== action.payload._id),
+      };
+    case 'DELETE_BOOK_FAIL':
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+      };
+    case 'CLEAR_ERROR':
+      return {
+        ...state,
+        error: null,
+      };
     default:
-      throw new Error();
+      return state;
   }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   TextField,
@@ -33,10 +33,65 @@ export default function BookModal({
   message,
   action,
   readOnly = true,
+  dispatch,
+  userInfo,
 }) {
   const classes = useStyles();
 
   const { title, author, description } = selectedBook;
+
+  const [book, setBook] = useState(
+    action === 'Save'
+      ? { title: '', author: '', description: '' }
+      : { title, author, description }
+  );
+
+  const onBookChange = e => {
+    const { name, value } = e.target;
+    setBook(prevBook => {
+      return { ...prevBook, [name]: value };
+    });
+  };
+
+  const onSaveClick = async () => {
+    dispatch({ type: 'CREATE_BOOK' });
+
+    try {
+      const { data: result } = await axios({
+        method: 'post',
+        url: '/api/v1/books',
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+        data: book,
+      });
+      dispatch({ type: 'CREATE_BOOK_SUCCESS', payload: result.data });
+    } catch (error) {
+      console.log('error :>> ', error);
+      dispatch({ type: 'CREATE_BOOK_FAIL', error: error.response.data.error });
+    }
+  };
+
+  const onUpdateClick = async () => {
+    dispatch({ type: 'UPDATE_BOOK' });
+
+    try {
+      const { data: result } = await axios({
+        method: 'put',
+        url: `/api/v1/books/${selectedBook._id}`,
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+        data: book,
+      });
+      dispatch({ type: 'UPDATE_BOOK_SUCCESS', payload: result.data });
+    } catch (error) {
+      console.log('error :>> ', error);
+      dispatch({ type: 'UPDATE_BOOK_FAIL', error: error.response.data.error });
+    }
+  };
 
   return (
     <Dialog
@@ -58,8 +113,8 @@ export default function BookModal({
                 id="title"
                 label="Title"
                 name="title"
-                value={title}
-                onChange={{}}
+                value={book.title}
+                onChange={onBookChange}
                 disabled={readOnly}
               />
             </Grid>
@@ -71,8 +126,8 @@ export default function BookModal({
                 id="author"
                 label="Author"
                 name="author"
-                value={author}
-                onChange={{}}
+                value={book.author}
+                onChange={onBookChange}
                 disabled={readOnly}
               />
             </Grid>
@@ -81,12 +136,13 @@ export default function BookModal({
                 variant="outlined"
                 required
                 fullWidth
+                name="description"
                 id="description"
                 label="Summary"
                 multiline
                 rows={10}
-                value={description}
-                onChange={{}}
+                value={book.description}
+                onChange={onBookChange}
                 disabled={readOnly}
               />
             </Grid>
@@ -104,7 +160,10 @@ export default function BookModal({
 
         {action && (
           <Button
-            onClick={() => setOpen(false)}
+            onClick={() => {
+              setOpen(false);
+              action === 'Save' ? onSaveClick() : onUpdateClick();
+            }}
             color="secondary"
             variant="contained"
           >

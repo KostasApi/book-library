@@ -63,8 +63,7 @@ export default function Books({ userInfo, filters }) {
 
   const [state, dispatch] = useContext(BooksContext);
 
-  const { data, error, loading } = state;
-  const books = data?.data || [];
+  const { books, error, loading } = state;
 
   const [setUrl] = useApi(dispatch, null, {
     headers: {
@@ -189,20 +188,28 @@ export default function Books({ userInfo, filters }) {
         dispatch={dispatch}
         dispatchType="CLEAR_ERROR"
       />
-      <BookModal
-        open={open}
-        setOpen={setOpen}
-        selectedBook={selectedBook}
-        header={modalHeader}
-        message={modalMessage}
-        action={modalAction}
-        readOnly={readOnly}
-      />
-      <ConfirmDeleteModal
-        open={openDelete}
-        setOpen={setOpenDelete}
-        selectedBook={selectedBook}
-      />
+      {open && (
+        <BookModal
+          open={open}
+          setOpen={setOpen}
+          selectedBook={selectedBook}
+          header={modalHeader}
+          message={modalMessage}
+          action={modalAction}
+          readOnly={readOnly}
+          dispatch={dispatch}
+          userInfo={userInfo}
+        />
+      )}
+      {openDelete && (
+        <ConfirmDeleteModal
+          open={openDelete}
+          setOpen={setOpenDelete}
+          selectedBook={selectedBook}
+          dispatch={dispatch}
+          userInfo={userInfo}
+        />
+      )}
     </>
   );
 }

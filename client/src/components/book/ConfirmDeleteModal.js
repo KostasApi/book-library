@@ -30,10 +30,31 @@ export default function ConfirmDeleteModal({
   header,
   message,
   selectedBook,
+  dispatch,
+  userInfo,
 }) {
   const classes = useStyles();
 
   const { title } = selectedBook;
+
+  const onDeleteClick = async () => {
+    dispatch({ type: 'DELETE_BOOK' });
+
+    try {
+      const { data: result } = await axios({
+        method: 'delete',
+        url: `/api/v1/books/${selectedBook._id}`,
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+      dispatch({ type: 'DELETE_BOOK_SUCCESS', payload: result.data });
+    } catch (error) {
+      console.log('error :>> ', error);
+      dispatch({ type: 'DELETE_BOOK_FAIL', error: error.response.data.error });
+    }
+  };
 
   return (
     <Dialog
@@ -64,7 +85,10 @@ export default function ConfirmDeleteModal({
         </Button>
 
         <Button
-          onClick={() => setOpen(false)}
+          onClick={() => {
+            setOpen(false);
+            onDeleteClick();
+          }}
           color="secondary"
           variant="contained"
         >
