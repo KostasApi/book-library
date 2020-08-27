@@ -10,8 +10,9 @@ import {
   Menu,
   MenuItem,
   Tooltip,
+  Divider,
 } from '@material-ui/core';
-import { AccountCircle } from '@material-ui/icons';
+import { AccountCircle, ExitToApp, BookOutlined } from '@material-ui/icons';
 
 import { UserContext } from 'context/userContext';
 
@@ -22,6 +23,8 @@ const useStyles = makeStyles(theme => ({
   },
   toolbarTitle: {
     flex: 1,
+    paddingLeft: 140,
+    textDecoration: 'none',
   },
   singupButton: {
     margin: '0 10px',
@@ -34,6 +37,7 @@ const useStyles = makeStyles(theme => ({
   link: {
     textDecoration: 'none',
     color: 'black',
+    display: 'flex',
   },
 }));
 
@@ -64,19 +68,23 @@ export default function Header({ title }) {
       open={isMenuOpen}
       onClose={() => setIsMenuOpen(false)}
     >
-      {/* <MenuItem onClick={() => setIsMenuOpen(false)}>
-        <Link className={classes.link} to="/home">
-          Profile
+      <MenuItem onClick={() => setIsMenuOpen(false)}>
+        <Link className={classes.link} to="/booklist">
+          <BookOutlined /> My Books
         </Link>
-      </MenuItem> */}
-      <MenuItem onClick={onSignOut}>Sign Out</MenuItem>
+      </MenuItem>
+      <Divider variant="middle" />
+      <MenuItem onClick={onSignOut}>
+        <ExitToApp /> Sign Out
+      </MenuItem>
     </Menu>
   );
 
   return (
     <Toolbar className={classes.toolbar}>
       <Typography
-        component="h2"
+        component={Link}
+        to="/home"
         variant="h5"
         color="inherit"
         align="center"
