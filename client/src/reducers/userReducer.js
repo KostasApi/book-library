@@ -53,6 +53,6 @@ export default function userReducer(state, action) {
         error: null,
       };
     default:
-      throw new Error();
+      return state;
   }
 }
