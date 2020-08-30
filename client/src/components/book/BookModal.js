@@ -125,6 +125,12 @@ export default function BookModal({
                 value={book.title}
                 onChange={onBookChange}
                 disabled={readOnly}
+                error={book.title && book.title.length < 2}
+                helperText={
+                  book.title &&
+                  book.title.length < 2 &&
+                  'Title must be at least 2 characters long.'
+                }
               />
             </Grid>
             <Grid item xs={12}>
@@ -138,6 +144,12 @@ export default function BookModal({
                 value={book.author}
                 onChange={onBookChange}
                 disabled={readOnly}
+                error={book.author && book.author.length < 2}
+                helperText={
+                  book.author &&
+                  book.author.length < 2 &&
+                  'Author must be at least 2 characters long.'
+                }
               />
             </Grid>
             <Grid item xs={12}>
@@ -153,6 +165,12 @@ export default function BookModal({
                 value={book.description}
                 onChange={onBookChange}
                 disabled={readOnly}
+                error={book.description && book.description.length > 500}
+                helperText={
+                  book.description &&
+                  book.description.length > 500 &&
+                  'Summary can not be xcmore than 500 characters long.'
+                }
               />
             </Grid>
           </Grid>
