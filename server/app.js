@@ -2,6 +2,12 @@ const express = require("express");
 const morgan = require("morgan");
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUI = require("swagger-ui-express");
+const mongoSanitize = require("express-mongo-sanitize");
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const rateLimit = require("express-rate-limit");
+const hpp = require("hpp");
+const cors = require("cors");
 
 const errorHandler = require("./middlewares/error");
 
@@ -9,6 +15,28 @@ const connectDB = require("./db/db");
 
 module.exports = api => {
   const app = express();
+
+  // Sanitize data
+  app.use(mongoSanitize());
+
+  // Set security headers
+  app.use(helmet());
+
+  // Prevent XSS attacks
+  app.use(xss());
+
+  // Rate limiting
+  const limiter = rateLimit({
+    windowMs: 10 * 60 * 1000, // 10 mins
+    max: 1000,
+  });
+  app.use(limiter);
+
+  // Prevent http param pollution
+  app.use(hpp());
+
+  // Enable CORS
+  app.use(cors());
 
   require("./middlewares/authentication")(api);
 
