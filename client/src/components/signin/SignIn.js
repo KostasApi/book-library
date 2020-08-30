@@ -21,6 +21,7 @@ import {
 import { UserContext } from 'context/userContext';
 import Spinner from 'components/loader/Spinner';
 import Message from 'components/message/Message';
+import validateEmail from 'utils/validateEmail';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -104,6 +105,16 @@ export default function SignIn() {
             autoFocus
             value={userCredentials.email}
             onChange={onInputChange}
+            error={
+              userCredentials.email &&
+              (!userCredentials.email || !validateEmail(userCredentials.email))
+            }
+            helperText={
+              userCredentials.email &&
+              (!userCredentials.email.length ||
+                !validateEmail(userCredentials.email)) &&
+              'Please use a valid email address.'
+            }
           />
           <TextField
             variant="outlined"
@@ -117,6 +128,14 @@ export default function SignIn() {
             autoComplete="current-password"
             value={userCredentials.password}
             onChange={onInputChange}
+            error={
+              userCredentials.password && userCredentials.password.length < 6
+            }
+            helperText={
+              userCredentials.password &&
+              userCredentials.password.length < 6 &&
+              'Password must be at least 6 characters long.'
+            }
           />
           <Button
             type="submit"

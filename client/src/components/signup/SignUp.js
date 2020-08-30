@@ -22,6 +22,7 @@ import {
 import { UserContext } from 'context/userContext';
 import Spinner from 'components/loader/Spinner';
 import Message from 'components/message/Message';
+import validateEmail from 'utils/validateEmail';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -105,6 +106,12 @@ export default function SignUp() {
                 autoFocus
                 value={user.firstname}
                 onChange={onInputChange}
+                error={user.firstname && user.firstname.length < 2}
+                helperText={
+                  user.firstname &&
+                  user.firstname.length < 2 &&
+                  'First name must be at least 2 characters long.'
+                }
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -118,6 +125,12 @@ export default function SignUp() {
                 autoComplete="lname"
                 value={user.lastname}
                 onChange={onInputChange}
+                error={user.lastname && user.lastname.length < 2}
+                helperText={
+                  user.lastname &&
+                  user.lastname.length < 2 &&
+                  'Last name must be at least 2 characters long.'
+                }
               />
             </Grid>
             <Grid item xs={12}>
@@ -131,6 +144,14 @@ export default function SignUp() {
                 autoComplete="email"
                 value={user.email}
                 onChange={onInputChange}
+                error={
+                  user.email && (!user.email || !validateEmail(user.email))
+                }
+                helperText={
+                  user.email &&
+                  (!user.email.length || !validateEmail(user.email)) &&
+                  'Please use a valid email address.'
+                }
               />
             </Grid>
             <Grid item xs={12}>
@@ -145,6 +166,12 @@ export default function SignUp() {
                 autoComplete="current-password"
                 value={user.password}
                 onChange={onInputChange}
+                error={user.password && user.password.length < 6}
+                helperText={
+                  user.password &&
+                  user.password.length < 6 &&
+                  'Password must be at least 6 characters long.'
+                }
               />
             </Grid>
           </Grid>
