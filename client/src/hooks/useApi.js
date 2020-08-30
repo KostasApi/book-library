@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import {
-  FETCH_DATA,
-  FETCH_DATA_SUCCESS,
-  FETCH_DATA_FAIL,
-} from 'actions/booksActions';
-
-export const useApi = (dispatch, initialUrl, requestOptions = {}) => {
+export const useApi = (
+  dispatch,
+  actions = {
+    fetch: '',
+    success: '',
+    fail: '',
+  },
+  initialUrl,
+  requestOptions = {}
+) => {
   const [url, setUrl] = useState(initialUrl);
 
   useEffect(() => {
@@ -15,7 +18,7 @@ export const useApi = (dispatch, initialUrl, requestOptions = {}) => {
     if (!url) return;
 
     const fetchData = async () => {
-      dispatch({ type: FETCH_DATA });
+      dispatch({ type: actions.fetch });
 
       try {
         const { data: result } = await axios({
@@ -25,12 +28,12 @@ export const useApi = (dispatch, initialUrl, requestOptions = {}) => {
         });
 
         if (!didCancel) {
-          dispatch({ type: FETCH_DATA_SUCCESS, payload: result.data });
+          dispatch({ type: actions.success, payload: result.data });
         }
       } catch (error) {
         if (!didCancel) {
           dispatch({
-            type: FETCH_DATA_FAIL,
+            type: actions.fail,
             error: error.response.data.error,
           });
         }

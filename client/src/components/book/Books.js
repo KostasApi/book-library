@@ -15,7 +15,12 @@ import { Skeleton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import { debounce } from 'lodash';
 
-import { CLEAR_BOOKS_ERROR } from 'actions/booksActions';
+import {
+  FETCH_BOOKS,
+  FETCH_BOOKS_SUCCESS,
+  FETCH_BOOKS_FAIL,
+  CLEAR_BOOKS_ERROR,
+} from 'actions/booksActions';
 import { useApi } from 'hooks/useApi';
 import { BooksContext } from 'context/booksContext';
 import RowsLoader from 'components/loader/RowsLoader';
@@ -66,12 +71,21 @@ export default function Books({ userInfo, filters }) {
 
   const { books, error, loading } = state;
 
-  const [setUrl] = useApi(dispatch, null, {
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${userInfo.token}`,
+  const [setUrl] = useApi(
+    dispatch,
+    {
+      fetch: FETCH_BOOKS,
+      success: FETCH_BOOKS_SUCCESS,
+      fail: FETCH_BOOKS_FAIL,
     },
-  });
+    null,
+    {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+  );
 
   const callApi = useCallback(
     debounce(url => {
