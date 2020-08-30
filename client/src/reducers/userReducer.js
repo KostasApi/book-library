@@ -6,6 +6,7 @@ import {
   SIGN_UP_SUCCESS,
   SIGN_UP_FAIL,
   SIGN_OUT,
+  SET_USER_ERROR,
   CLEAR_USER_ERROR,
 } from 'actions/userActions';
 
@@ -57,6 +58,11 @@ export default function userReducer(state, action) {
       return {
         ...state,
         userInfo: null,
+      };
+    case SET_USER_ERROR:
+      return {
+        ...state,
+        error: action.error,
       };
     case CLEAR_USER_ERROR:
       return {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,10 +10,16 @@ import PrivateRoute from './PrivateRoute';
 import Homepage from 'components/homepage/Homepage';
 import SignUp from 'components/signup/SignUp';
 import SignIn from 'components/signin/SignIn';
+import SignOut from 'components/signout/SignOut';
 import BookList from 'components/book/BookList';
 import NotFound from 'components/notFound/NotFound';
+import { UserContext } from 'context/userContext';
+import NetworkService from 'utils/api';
 
 const AppRouter = () => {
+  const [, dispatch] = useContext(UserContext);
+  NetworkService.setupInterceptors(dispatch);
+
   return (
     <Router>
       <Switch>
@@ -21,6 +27,7 @@ const AppRouter = () => {
         <Route exact path="/home" render={() => <Homepage />} />
         <Route exact path="/signup" render={() => <SignUp />} />
         <Route exact path="/signin" render={() => <SignIn />} />
+        <Route exact path="/signout" render={() => <SignOut />} />
         <PrivateRoute exact path="/booklist" component={BookList} />
         <Route render={() => <NotFound />} />
       </Switch>

@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -21,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 export default function BookList() {
   const classes = useStyles();
 
-  const [{ userInfo }] = useContext(UserContext);
+  const [{ userInfo, error }] = useContext(UserContext);
 
   const {
     user: { firstname, lastname },
@@ -39,7 +40,9 @@ export default function BookList() {
     });
   };
 
-  return (
+  return error ? (
+    <Redirect to="/signout" />
+  ) : (
     <BooksContextProvider>
       <Container className={classes.booklist} maxWidth="lg">
         <Header title="Book Library" />
