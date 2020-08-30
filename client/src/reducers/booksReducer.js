@@ -1,7 +1,7 @@
 import {
-  FETCH_DATA,
-  FETCH_DATA_SUCCESS,
-  FETCH_DATA_FAIL,
+  FETCH_BOOKS,
+  FETCH_BOOKS_SUCCESS,
+  FETCH_BOOKS_FAIL,
   CREATE_BOOK,
   CREATE_BOOK_SUCCESS,
   CREATE_BOOK_FAIL,
@@ -22,20 +22,20 @@ export const initialState = {
 
 export default function userReducer(state, action) {
   switch (action.type) {
-    case FETCH_DATA:
+    case FETCH_BOOKS:
       return {
         ...state,
         loading: true,
         error: null,
       };
-    case FETCH_DATA_SUCCESS:
+    case FETCH_BOOKS_SUCCESS:
       return {
         ...state,
         loading: false,
         error: null,
         books: action.payload,
       };
-    case FETCH_DATA_FAIL:
+    case FETCH_BOOKS_FAIL:
       return {
         ...state,
         loading: false,
