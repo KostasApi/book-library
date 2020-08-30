@@ -1,3 +1,14 @@
+import {
+  SIGN_IN,
+  SIGN_IN_SUCCESS,
+  SIGN_IN_FAIL,
+  SIGN_UP,
+  SIGN_UP_SUCCESS,
+  SIGN_UP_FAIL,
+  SIGN_OUT,
+  CLEAR_USER_ERROR,
+} from 'actions/userActions';
+
 export const initialState = {
   userInfo: null,
   loading: false,
@@ -6,48 +17,48 @@ export const initialState = {
 
 export default function userReducer(state, action) {
   switch (action.type) {
-    case 'SIGN_IN':
+    case SIGN_IN:
       return {
         ...state,
         loading: true,
       };
-    case 'SIGN_IN_SUCCESS':
+    case SIGN_IN_SUCCESS:
       return {
         ...state,
         userInfo: action.payload,
         loading: false,
         error: null,
       };
-    case 'SIGN_IN_FAIL':
+    case SIGN_IN_FAIL:
       return {
         ...state,
         loading: false,
         error: action.error,
       };
-    case 'SIGN_UP':
+    case SIGN_UP:
       return {
         ...state,
         loading: true,
       };
-    case 'SIGN_UP_SUCCESS':
+    case SIGN_UP_SUCCESS:
       return {
         ...state,
         userInfo: action.payload,
         loading: false,
         error: null,
       };
-    case 'SIGN_UP_FAIL':
+    case SIGN_UP_FAIL:
       return {
         ...state,
         loading: false,
         error: action.error,
       };
-    case 'SIGN_OUT':
+    case SIGN_OUT:
       return {
         ...state,
         userInfo: null,
       };
-    case 'CLEAR_ERROR':
+    case CLEAR_USER_ERROR:
       return {
         ...state,
         error: null,

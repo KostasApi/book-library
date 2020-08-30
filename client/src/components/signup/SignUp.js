@@ -13,6 +13,12 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
+import {
+  SIGN_UP,
+  SIGN_UP_SUCCESS,
+  SIGN_UP_FAIL,
+  CLEAR_USER_ERROR,
+} from 'actions/userActions';
 import { UserContext } from 'context/userContext';
 import Spinner from 'components/loader/Spinner';
 import Message from 'components/message/Message';
@@ -57,14 +63,14 @@ export default function SignUp() {
 
   const onSubmit = async e => {
     e.preventDefault();
-    dispatch({ type: 'SIGN_UP' });
+    dispatch({ type: SIGN_UP });
 
     try {
       const { data: result } = await axios.post('/api/v1/users/signup', user);
-      dispatch({ type: 'SIGN_UP_SUCCESS', payload: { user: result.data } });
+      dispatch({ type: SIGN_UP_SUCCESS, payload: { user: result.data } });
     } catch (error) {
       console.log('error :>> ', error);
-      dispatch({ type: 'SIGN_UP_FAIL', error: error.response.data.error });
+      dispatch({ type: SIGN_UP_FAIL, error: error.response.data.error });
     }
   };
 
@@ -177,7 +183,7 @@ export default function SignUp() {
         message={error}
         severity="error"
         dispatch={dispatch}
-        dispatchType="CLEAR_ERROR"
+        dispatchType={CLEAR_USER_ERROR}
       />
     </Container>
   );

@@ -11,6 +11,12 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
+import {
+  DELETE_BOOK,
+  DELETE_BOOK_SUCCESS,
+  DELETE_BOOK_FAIL,
+} from 'actions/booksActions';
+
 const useStyles = makeStyles(theme => ({
   dialog: {
     minWidth: 360,
@@ -27,8 +33,6 @@ const useStyles = makeStyles(theme => ({
 export default function ConfirmDeleteModal({
   open,
   setOpen,
-  header,
-  message,
   selectedBook,
   dispatch,
   userInfo,
@@ -38,7 +42,7 @@ export default function ConfirmDeleteModal({
   const { title } = selectedBook;
 
   const onDeleteClick = async () => {
-    dispatch({ type: 'DELETE_BOOK' });
+    dispatch({ type: DELETE_BOOK });
 
     try {
       const { data: result } = await axios({
@@ -49,10 +53,10 @@ export default function ConfirmDeleteModal({
           Authorization: `Bearer ${userInfo.token}`,
         },
       });
-      dispatch({ type: 'DELETE_BOOK_SUCCESS', payload: result.data });
+      dispatch({ type: DELETE_BOOK_SUCCESS, payload: result.data });
     } catch (error) {
       console.log('error :>> ', error);
-      dispatch({ type: 'DELETE_BOOK_FAIL', error: error.response.data.error });
+      dispatch({ type: DELETE_BOOK_FAIL, error: error.response.data.error });
     }
   };
 

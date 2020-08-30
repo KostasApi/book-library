@@ -15,6 +15,7 @@ import { Skeleton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import { debounce } from 'lodash';
 
+import { CLEAR_BOOKS_ERROR } from 'actions/booksActions';
 import { useApi } from 'hooks/useApi';
 import { BooksContext } from 'context/booksContext';
 import RowsLoader from 'components/loader/RowsLoader';
@@ -186,7 +187,7 @@ export default function Books({ userInfo, filters }) {
         message={error}
         severity="error"
         dispatch={dispatch}
-        dispatchType="CLEAR_ERROR"
+        dispatchType={CLEAR_BOOKS_ERROR}
       />
       {open && (
         <BookModal

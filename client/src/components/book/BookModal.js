@@ -12,6 +12,15 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
+import {
+  CREATE_BOOK,
+  CREATE_BOOK_SUCCESS,
+  CREATE_BOOK_FAIL,
+  UPDATE_BOOK,
+  UPDATE_BOOK_SUCCESS,
+  UPDATE_BOOK_FAIL,
+} from 'actions/booksActions';
+
 const useStyles = makeStyles(theme => ({
   dialog: {
     minWidth: 360,
@@ -54,7 +63,7 @@ export default function BookModal({
   };
 
   const onSaveClick = async () => {
-    dispatch({ type: 'CREATE_BOOK' });
+    dispatch({ type: CREATE_BOOK });
 
     try {
       const { data: result } = await axios({
@@ -66,15 +75,15 @@ export default function BookModal({
         },
         data: book,
       });
-      dispatch({ type: 'CREATE_BOOK_SUCCESS', payload: result.data });
+      dispatch({ type: CREATE_BOOK_SUCCESS, payload: result.data });
     } catch (error) {
       console.log('error :>> ', error);
-      dispatch({ type: 'CREATE_BOOK_FAIL', error: error.response.data.error });
+      dispatch({ type: CREATE_BOOK_FAIL, error: error.response.data.error });
     }
   };
 
   const onUpdateClick = async () => {
-    dispatch({ type: 'UPDATE_BOOK' });
+    dispatch({ type: UPDATE_BOOK });
 
     try {
       const { data: result } = await axios({
@@ -86,10 +95,10 @@ export default function BookModal({
         },
         data: book,
       });
-      dispatch({ type: 'UPDATE_BOOK_SUCCESS', payload: result.data });
+      dispatch({ type: UPDATE_BOOK_SUCCESS, payload: result.data });
     } catch (error) {
       console.log('error :>> ', error);
-      dispatch({ type: 'UPDATE_BOOK_FAIL', error: error.response.data.error });
+      dispatch({ type: UPDATE_BOOK_FAIL, error: error.response.data.error });
     }
   };
 

@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import { AccountCircle, ExitToApp, BookOutlined } from '@material-ui/icons';
 
+import { SIGN_OUT } from 'actions/userActions';
 import { UserContext } from 'context/userContext';
 
 const useStyles = makeStyles(theme => ({
@@ -23,7 +24,6 @@ const useStyles = makeStyles(theme => ({
   },
   toolbarTitle: {
     flex: 1,
-    paddingLeft: 140,
     textDecoration: 'none',
   },
   singupButton: {
@@ -52,7 +52,7 @@ export default function Header({ title }) {
   const onSignOut = () => {
     setIsMenuOpen(false);
     dispatch({
-      type: 'SIGN_OUT',
+      type: SIGN_OUT,
     });
   };
 
