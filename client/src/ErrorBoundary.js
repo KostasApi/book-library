@@ -23,10 +23,10 @@ class ErrorBoundary extends React.Component {
         <Container
           style={{
             display: 'flex',
-            'flex-direction': 'column',
-            'min-height': '100vh',
-            'justify-content': 'center',
-            'text-align': 'center',
+            flexDirection: 'column',
+            minHeight: '100vh',
+            justifyContent: 'center',
+            textAlign: 'center',
           }}
           maxWidth="sm"
         >
@@ -43,7 +43,7 @@ class ErrorBoundary extends React.Component {
             style={{
               width: 160,
               display: 'flex',
-              'align-self': 'center',
+              alignSelf: 'center',
               margin: '8px 0px',
             }}
             onClick={() => (window.location.href = '/home')}
