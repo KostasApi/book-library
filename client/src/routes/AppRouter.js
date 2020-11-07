@@ -13,11 +13,11 @@ import SignIn from 'components/signin/SignIn';
 import SignOut from 'components/signout/SignOut';
 import BookList from 'components/book/BookList';
 import NotFound from 'components/notFound/NotFound';
-import { UserContext } from 'context/userContext';
+import { ErrorContext } from 'context/errorContext';
 import NetworkService from 'utils/api';
 
 const AppRouter = () => {
-  const [, dispatch] = useContext(UserContext);
+  const [, dispatch] = useContext(ErrorContext);
   NetworkService.setupInterceptors(dispatch);
 
   return (

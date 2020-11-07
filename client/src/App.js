@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ErrorBoundary from './ErrorBoundary';
 import AppRouter from 'routes/AppRouter';
 import { UserContextProvider } from 'context/userContext';
+import { ErrorContextProvider } from 'context/errorContext';
 
 const useStyles = makeStyles(theme => ({
   app: {
@@ -18,10 +19,12 @@ export default function App() {
   return (
     <ErrorBoundary>
       <UserContextProvider>
-        <div className={classes.app}>
-          <CssBaseline />
-          <AppRouter />
-        </div>
+        <ErrorContextProvider>
+          <div className={classes.app}>
+            <CssBaseline />
+            <AppRouter />
+          </div>
+        </ErrorContextProvider>
       </UserContextProvider>
     </ErrorBoundary>
   );

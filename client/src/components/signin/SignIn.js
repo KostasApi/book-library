@@ -18,7 +18,9 @@ import {
   SIGN_IN_FAIL,
   CLEAR_USER_ERROR,
 } from 'actions/userActions';
+import { CLEAR_ERROR } from 'actions/errorActions';
 import { UserContext } from 'context/userContext';
+import { ErrorContext } from 'context/errorContext';
 import Spinner from 'components/loader/Spinner';
 import Message from 'components/message/Message';
 import validateEmail from 'utils/validateEmail';
@@ -58,6 +60,9 @@ export default function SignIn() {
   });
 
   const [{ userInfo, loading, error }, dispatch] = useContext(UserContext);
+  const [{ error: generalError }, generalErrorDispatch] = useContext(
+    ErrorContext
+  );
 
   const onSubmit = async e => {
     e.preventDefault();
@@ -173,6 +178,13 @@ export default function SignIn() {
         severity="error"
         dispatch={dispatch}
         dispatchType={CLEAR_USER_ERROR}
+      />
+      <Message
+        show={!!generalError}
+        message={generalError}
+        severity="error"
+        dispatch={generalErrorDispatch}
+        dispatchType={CLEAR_ERROR}
       />
     </Container>
   );
