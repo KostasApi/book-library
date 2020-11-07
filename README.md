@@ -53,13 +53,13 @@ https://www.docker.com/get-started
 git clone https://github.com/KostasApi/book-library.git
 ```
 
-3. Build project's :whale: Docker Images
+2. Build project's :whale: Docker Images
 
 ```sh
 docker-compose build
 ```
 
-4. Run project's :whale: Docker Containers
+3. Run project's :whale: Docker Containers
 
 ```sh
 docker-compose up
