@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: book-library-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: book-library-mongo
+  template:
+    metadata:
+      labels:
+        app: book-library-mongo
+    spec:
+      containers:
+        - name: book-library-mongo
+          image: mongo:4.0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: book-library-mongo-srv
+spec:
+  selector:
+    app: book-library-mongo
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: book-library-mongo-stateful-set
+spec:
+  replicas: 1
+  serviceName: 'book-library-mongo-srv'
+  selector:
+    matchLabels:
+      app: book-library-mongo
+  template:
+    metadata:
+      labels:
+        app: book-library-mongo
+    spec:
+      volumes:
+        - name: book-library-mongo-storage
+          persistentVolumeClaim:
+            claimName: book-library-mongo-pvc
+      containers:
+        - name: book-library-mongo
+          image: mongo:4.0
+          volumeMounts:
+            - mountPath: '/data/db'
+              name: book-library-mongo-storage

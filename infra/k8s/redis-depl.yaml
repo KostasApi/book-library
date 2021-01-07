@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: book-library-redis-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: book-library-redis
+  template:
+    metadata:
+      labels:
+        app: book-library-redis
+    spec:
+      containers:
+        - name: book-library-redis
+          image: redis:alpine
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: book-library-redis-srv
+spec:
+  selector:
+    app: book-library-redis
+  ports:
+    - name: cache
+      protocol: TCP
+      port: 6379
+      targetPort: 6379

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: book-library-client-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: book-library-client
+  template:
+    metadata:
+      labels:
+        app: book-library-client
+    spec:
+      containers:
+        - name: book-library-client
+          image: kapidopoulos/book-library-client:1.0.0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: book-library-client-srv
+spec:
+  selector:
+    app: book-library-client
+  ports:
+    - name: book-library-client
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
