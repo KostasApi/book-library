@@ -22,6 +22,8 @@ Web application to store each user his/her favourite books.
 
 ### Built With
 
+- [Kubernetes](https://kubernetes.io/)
+- [Skaffold](https://skaffold.dev/)
 - [Docker](https://www.docker.com/)
 - [NGINX](https://www.nginx.com/)
 - [React](https://reactjs.org/)
