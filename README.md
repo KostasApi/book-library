@@ -22,7 +22,7 @@ Web application to store each user his/her favourite books.
 
 ### Built With
 
-- [:whale: Docker](https://www.docker.com/)
+- [Docker](https://www.docker.com/)
 - [NGINX](https://www.nginx.com/)
 - [React](https://reactjs.org/)
 - [Material-UI](https://material-ui.com/)
@@ -37,9 +37,9 @@ Web application to store each user his/her favourite books.
 
 ### Prerequisites
 
-In order to avoid the installation on the above technologies locally, the project leveraging :whale: **Docker**. So the only dependency to run the project in development mode is :whale: **Docker**.
+In order to avoid the installation on the above technologies locally, the project leveraging **Docker**. So the only dependency to run the project in development mode is **Docker**.
 
-- :whale: Docker
+- Docker :whale:
 
 ```sh
 https://www.docker.com/get-started
@@ -53,13 +53,13 @@ https://www.docker.com/get-started
 git clone https://github.com/KostasApi/book-library.git
 ```
 
-2. Build project's :whale: Docker Images
+2. Build project's Docker Images
 
 ```sh
 docker-compose build
 ```
 
-3. Run project's :whale: Docker Containers
+3. Run project's Docker Containers
 
 ```sh
 docker-compose up
@@ -97,11 +97,12 @@ docker-compose down
   - :white_check_mark: protect from http param pollution
   - :white_check_mark: add cors
 - :white_check_mark: Create README file
+- :white_check_mark: Deploy app in local kubernetes cluster
 
 - :x: Add commit hook
 - :x: Server Unit Tests
 - :x: Client Unit Tests
-- :x: Update README file
+- :x: Deploy app in a host provider
 
 <!-- LICENSE -->
 
